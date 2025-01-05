@@ -1402,7 +1402,7 @@
   let skill = ""                      // Temporary variable to store skill names.
   let index1 = 0                     // Index variable for iterating through dictionary keys.
   let index2 = 0                     // Index variable for iterating through multilingual language keys.
-  let overview = ()                  // Container for storing categorized skills.
+  let overview = (:)                  // Container for storing categorized skills.
   let tab-header = ()                // Container for storing table headers.
   let help = ()                      // Temporary variable to store individual skill details.
   let name = ""                     // Skill name.
@@ -1447,13 +1447,13 @@
   // Function to get language-specific field
   let getLangField = (field, lang) => if type(field) == dictionary { field.at(lang) } else { field }
 
-  // Iterate over the keys of the dictionary to process skills
-  for key in what.keys() {
-    let subset = what.at(key) // Get the subset of skills for the current key
+  // Process all categories dynamically
+  for category in what.keys() {
+    let category_skills = ()  // Array to store skills for current category
+    let subset = what.at(category)
 
-    for course in subset.keys() {
-      let header = what.keys().at(index1) // Get the current category header
-      let details = subset.at(course)           // Get the details for the current skill
+    for skill_name in subset.keys() {
+      let details = subset.at(skill_name)
 
       // Get the name and description based on the language
       if type(details.name) == dictionary {
@@ -1469,29 +1469,20 @@
       }
 
       level = details.level
-      level-text = level-icons(level) // Generate the icons for the skill level
+      level-text = level-icons(level)
       
-      help = (name, level-text, description) // Create a tuple of skill details
-
-      // Categorize the skill based on the header
-      if header == "computer" {
-        computer.push(help)
-      }  else if header == "programs" {
-        programs.push(help)
-      } else if header == "languages" {
-        languages.push(help)
-      }
+      help = (name, level-text, description)
+      category_skills.push(help)
     }
 
-    index1 = index1 + 1 // Increment the index for the next category
-    
-    // Update the overview with categorized skills
-    overview = (computer: computer, programs: programs, languages: languages)
+    // Store the category's skills in the overview dictionary
+    overview.insert(category, category_skills)
   }
+
 
   // Load multilingual labels for the current language
   let sublang = multilingual.lang.at(lang)
-  let tab-header = (sublang.skills-computer, sublang.skills-programs, sublang.skills-languages)
+  // let tab-header = (sublang.skills-computer, sublang.skills-programs, sublang.skills-languages)
   let skills-tab-skills = sublang.skills-tab-skills
   let skills-tab-level = sublang.skills-tab-level
   let skills-tab-comment = sublang.skills-tab-comment
@@ -1514,51 +1505,34 @@
     ),
     table.hline(start: 1, stroke: (paint: gray_color, thickness: 1.25pt, dash: "dotted")), // Horizontal line after the header
     
-    // Populate table with computer-related skills
-    table.cell(
-      rowspan: overview.at("computer").len(),
-      align: top + right,
-    )[
-        #strong(tab-header.at(0))
-    ],
-    ..for (k, x, v) in overview.at("computer") {
+    // Dynamically generate table sections for each category
+    ..for (category, skills) in overview {
+      let category_header = if "skills-" + category in sublang {
+        sublang.at("skills-" + category)
+      } else {
+        category
+      }
+
       (
-        k, x, 
-        table.cell(colspan: 2)[#v]
+        // Category header cell
+        table.cell(
+          rowspan: skills.len(),
+          align: top + right,
+        )[
+          #strong(category_header)
+        ],
+        // Skills rows
+        ..for (name, level_icons, desc) in skills {
+          (
+            name,
+            level_icons,
+            table.cell(colspan: 2)[#desc]
+          )
+        },
+        // Separator line after category
+        table.hline(start: 1, stroke: (paint: gray_color, thickness: 1.25pt, dash: "dotted")),
       )
     },
-    table.hline(start: 1, stroke: (paint: gray_color, thickness: 1.25pt, dash: "dotted")),
-    
-    // Populate table with program-related skills
-    table.cell(
-      rowspan: overview.at("programs").len(),
-      align: top + right,
-    )[
-        #strong(tab-header.at(1))
-    ],
-    ..for (k, x, v) in overview.at("programs") {
-      (
-        k, x, 
-        table.cell(colspan: 2)[#v]
-      )
-    },
-    table.hline(start: 1, stroke: (paint: gray_color, thickness: 1.25pt, dash: "dotted")),
-    
-    // Populate table with language-related skills
-    table.cell(
-      rowspan: overview.at("languages").len(),
-      align: top + right,
-    )[
-        #strong(tab-header.at(2))
-    ],
-    ..for (k, x, v) in overview.at("languages") {
-      (
-        k, x, 
-        table.cell(colspan: 2)[#v]
-      )
-    },
-    table.hline(start: 1, stroke: (paint: gray_color, thickness: 1.25pt, dash: "dotted")),
-    
     // Add legends for skill levels
     table.cell(""),
     table.cell(colspan: 2)[
