@@ -147,7 +147,7 @@
 
   let title = []
   // Get the title from metadata
-  if type(metadata.personal.name) == "array" {
+  if type(metadata.personal.name) == array {
     if metadata.personal.split {
       title = [
         #text(size: 32pt, metadata.personal.name.at(0).split(", ").at(1))
@@ -160,7 +160,7 @@
         #text(size: 32pt, metadata.personal.name.at(0).split(", ").at(0))
       ]
     }
-  } else if type(metadata.personal.name) == "dictionary" {
+  } else if type(metadata.personal.name) == dictionary {
     if metadata.personal.split {
       title = [
         #text(size: 32pt, metadata.personal.name.firstname)
@@ -269,9 +269,9 @@
   v(1fr, weak: false)
 
   // Display the personal name from metadata
-  if type(metadata.personal.name) == "array" [
+  if type(metadata.personal.name) == array [
     #metadata.personal.name.at(0).split(", ").at(1) #metadata.personal.name.at(0).split(", ").at(0)
-  ] else if type(metadata.personal.name) == "dictionary" [
+  ] else if type(metadata.personal.name) == dictionary [
       #text(metadata.personal.name.firstname) #text(metadata.personal.name.lastname)
   ] else [
     [#text(metadata.personal.name)]
@@ -437,7 +437,6 @@
   let location = ""      // Variable to hold the location of each course
   let description = ""   // Variable to hold the description of each course
   let index = 0          // Index to track the current key in the dictionary
-  let dictionary = what // initilias dictionary
 
   // Create a headers dictionary based on the specified language, used for translating category names.
   // let headers = create-headers(metadata.paths.i18n, lang: lang)
@@ -456,14 +455,14 @@
   }
 
   // Iterate over each key (category) in the main dictionary.
-  for key in dictionary.keys() {
-    let subset = dictionary.at(key)  // Sub-dictionary for the current category.
-    let header = dictionary.keys().at(index)  // Current category key.
+  for key in what.keys() {
+    let subset = what.at(key)  // Sub-dictionary for the current category.
+    let header = what.keys().at(index)  // Current category key.
 
     // Prefix the header with "training-" to match localization keys.
     let header = "training-" + header
 
-    // Retrieve the localized category name using the headers dictionary.
+    // Retrieve the localized category name using the headers dict.
     let headerValue = if header in headers.keys() { headers.at(header) } else { "Unknown Header" }
 
     // Output the localized category name as a header.
@@ -475,7 +474,7 @@
 
       // Extract the date from the course details.
       if "left" in subset2.keys() {
-        if type(subset2.left) == "dictionary" {
+        if type(subset2.left) == dictionary {
           date = getLangField(subset2.left, lang)
         } else {
           date = subset2.left
@@ -483,7 +482,7 @@
       }
 
       // Extract the title, checking if it is a multilingual field.
-      if type(subset2.title) == "dictionary" { 
+      if type(subset2.title) == dictionary { 
         title = getLangField(subset2.title, lang)
       } else {
         title = subset2.title
@@ -491,7 +490,7 @@
 
       // Extract the subtitle if present, using language-specific fields.
       if "subtitle" in subset2.keys() {
-        if type(subset2.subtitle) == "dictionary" {
+        if type(subset2.subtitle) == dictionary {
           subtitle = getLangField(subset2.subtitle, lang)
         } else {
           substitle = subset2.subtitle
@@ -500,7 +499,7 @@
 
       // Extract the location if present in the course details.
       if "location" in subset2.keys() {
-        if type(subset2.location) == "dictionary" {
+        if type(subset2.location) == dictionary {
           location = getLangField(subset2.location, lang)
         } else {
           location = subset2.location
@@ -509,7 +508,7 @@
 
       // Extract the description if present, using language-specific fields.
       if "description" in subset2.keys() {
-        if type(subset2.description) == "dictionary" {
+        if type(subset2.description) == dictionary {
           description = getLangField(subset2.description, lang)
         } else {
           description = subset2.description
@@ -570,7 +569,7 @@
       }
     }
 
-    // Increment the index to move to the next key in the dictionary.
+    // Increment the index to move to the next key in the dict.
     index += 1
   }
 }
@@ -692,7 +691,7 @@
   
   // Function to format the publication date or publication state.
   // Arguments:
-  //   - fields: The reference fields dictionary.
+  //   - fields: The reference fields dict.
   //   - lang: The language code for localization.
   let format_date(fields, lang) = {
     // Handle cases where no date is available.
@@ -722,8 +721,8 @@
   //   - title: The title of the work, which could be a string or a dictionary (for multilingual titles).
   //   - lang: The language code for localization.
   let format_title(title, lang) = {
-    // Handle multilingual titles stored in a dictionary.
-    if type(title) == "dictionary" {
+    // Handle multilingual titles stored in a dict.
+    if type(title) == dictionary {
       if not lang in title {
         return [ #fields.title.main]  // Return the main title if the specified language is not available.
       } else {
@@ -873,10 +872,9 @@
    set block(above: 0.65em)
   
   // create object
-  let dictionary = what
   // If `entries` is empty, populate it with all keys from the YAML file.
   if entries.len() == 0 {
-    entries = dictionary.keys()
+    entries = what.keys()
   }
 
   // Initialize counters for different types of publications.
@@ -887,7 +885,7 @@
   let planned = 0
 
   // Loop through each entry in the YAML file to count the types of publications.
-  for (entry, field) in dictionary {
+  for (entry, field) in what {
     if field.tags == "planned" {
       planned += 1
     } else if field.type == "article" {
@@ -902,7 +900,7 @@
   }
 
   // Loop through each entry in the YAML file to generate the reference list.
-  for (entry, fields) in dictionary {
+  for (entry, fields) in what {
     
     // Skip entries not specified in entries if entries are specified.
     if entry not in entries {
@@ -959,29 +957,28 @@
   // let location = ""
   // let description = ""
   let subset = (:)  // // Initialize the subset dict
-  let dictionary = what // setting input
 
   // Iterate over each key in the database
-  for key in dictionary.keys() {
+  for key in what.keys() {
     let date = ""
     let title = ""
     let subtitle = ""
     let location = ""
     let description = ""
-    subset = dictionary.at(key)
+    subset = what.at(key)
 
     // Iterate over available languages in the multilingual data
     for language in multilingual.lang.keys() {
       if lang == language {
         // Handle the 'left' field
-        if type(subset.at("left")) == "dictionary" {
+        if type(subset.at("left")) == dictionary {
           date = subset.left.at(lang)
         } else {
           date = subset.left
         }
 
         // Handle the 'title' field
-        if type(subset.at("title")) == "dictionary" {
+        if type(subset.at("title")) == dictionary {
           title = subset.title.at(lang)
         } else {
           title = subset.title
@@ -989,7 +986,7 @@
 
         // Handle the 'subtitle' field
         if "subtitle" in subset.keys() {
-          if type(subset.at("subtitle")) == "dictionary" {
+          if type(subset.at("subtitle")) == dictionary {
             subtitle = subset.subtitle.at(lang)
           } else {
             subtitle = subset.subtitle
@@ -998,7 +995,7 @@
 
         // Handle the 'location' field
         if "location" in subset.keys() {
-          if type(subset.at("location")) == "dictionary" {
+          if type(subset.at("location")) == dictionary {
             location = subset.location.at(lang)
           } else {
             location = subset.location
@@ -1007,7 +1004,7 @@
 
         // Handle the 'description' field, if it exists
         if "description" in subset.keys() {
-          if type(subset.at("description")) == "dictionary" {
+          if type(subset.at("description")) == dictionary {
             description = subset.description.at(lang)
           } else {
             description = subset.description
@@ -1057,43 +1054,40 @@
   let check = ""         // Unused variable, potentially for future checks or operations.
   let location = ""      // Location of the event (if available).
   let description = ""   // Description of the event (if available).
-  // let multilingual = yaml(metadata.paths.i18n) // Load multilingual data.
-  let dictionary = what
-  // let dictionary = yaml(metadata.paths.at(what)) // Load event data from the YAML file.
 
   // Initialize an index for language iteration
   let index = 0
 
   // Iterate over each key (event) in the dictionary
-  for key in dictionary.keys() {
-    let subset = dictionary.at(key)
+  for key in what.keys() {
+    let subset = what.at(key)
     
     // Iterate over available languages in the multilingual data
     for language in multilingual.lang {
       if lang == language.at(index) {
         // Handle the 'left' field for date
-        if type(subset.at("left")) == "dictionary" {
+        if type(subset.at("left")) == dictionary {
           date = subset.left.at(lang)
         } else {
           date = subset.left
         }
 
         // Handle the 'title' field
-        if type(subset.at("title")) == "dictionary" {
+        if type(subset.at("title")) == dictionary {
           title = subset.title.at(lang)
         } else {
           title = subset.title
         }
 
         // Handle the 'subtitle' field
-        if type(subset.at("subtitle")) == "dictionary" {
+        if type(subset.at("subtitle")) == dictionary {
           subtitle = subset.subtitle.at(lang)
         } else {
           subtitle = subset.subtitle
         }
 
         // Handle the 'location' field
-        if type(subset.at("location")) == "dictionary" {
+        if type(subset.at("location")) == dictionary {
           location = subset.location.at(lang)
         } else {
           location = subset.location
@@ -1101,7 +1095,7 @@
 
         // Handle the 'description' field, if it exists
         if "description" in subset.keys() {
-          if type(subset.at("description")) == "dictionary" {
+          if type(subset.at("description")) == dictionary {
             description = subset.description.at(lang)
           }
         }
@@ -1151,39 +1145,38 @@
     let subtitle = ""      // Subtitle of the event (if available).
     let location = ""      // Location of the event.
     let description = ""   // Description of the event (if available).
-    let dictionary = what // Load event data from the YAML file.
     let index = 0          // Index for iterating through languages.
 
     // Iterate over the keys (events) in the dictionary
-    for key in dictionary.keys() {
-      let subset = dictionary.at(key)
+    for key in what.keys() {
+      let subset = what.at(key)
 
       // Iterate over available languages in the multilingual data
       for language in multilingual.lang {
         if lang == language.at(index) {
           // Handle the 'left' field for date
-          if type(subset.at("left")) == "dictionary" {
+          if type(subset.at("left")) == dictionary {
             date = subset.left.at(lang)
           } else {
             date = subset.left
           }
 
           // Handle the 'title' field
-          if type(subset.at("title")) == "dictionary" {
+          if type(subset.at("title")) == dictionary {
             title = subset.title.at(lang)
           } else {
             title = subset.title
           }
 
           // Handle the 'subtitle' field
-          if type(subset.at("subtitle")) == "dictionary" {
+          if type(subset.at("subtitle")) == dictionary {
             subtitle = subset.subtitle.at(lang)
           } else {
             subtitle = subset.subtitle
           }
 
           // Handle the 'location' field
-          if type(subset.at("location")) == "dictionary" {
+          if type(subset.at("location")) == dictionary {
             location = subset.location.at(lang)
           } else {
             location = subset.location
@@ -1191,7 +1184,7 @@
 
           // Handle the 'description' field, if it exists
           if "description" in subset.keys() {
-            if type(subset.at("description")) == "dictionary" {
+            if type(subset.at("description")) == dictionary {
               description = subset.description.at(lang)
             }
           }
@@ -1249,15 +1242,14 @@
   let tab-study = ""                // Header for the study column in the table.
   let tab-note = ""                 // Header for the note column in the table.
   let index = 0                     // Index for iterating through dictionary entries.
-  let dictionary = what    // Load event data from the YAML file.
 
   // Iterate over the keys (years) in the dictionary
-  for key in dictionary.keys() {
+  for key in what.keys() {
     // Extract the year from the dictionary
-    year = dictionary.keys().at(index)
+    year = what.keys().at(index)
  
     // Get the subset of events for the current year
-    let subset = dictionary.at(key) 
+    let subset = what.at(key) 
 
     // Iterate over each course in the subset
     for course in subset.keys() {
@@ -1347,25 +1339,24 @@
   let year = ""       // Year extracted from the YAML data.
   let subset = ""     // Subset of events for the current year.
   let index = 0       // Index for iterating through dictionary keys.
-  let dictionary = what // Load event data from the YAML file.
 
   // Iterate over the keys (years) in the dictionary
-  for key in dictionary.keys() {
+  for key in what.keys() {
     // Extract the year from the dictionary
-    year = dictionary.keys().at(index)
+    year = what.keys().at(index)
 
     // Initialize an empty list to hold events for the current year
     let conf-in-year = []
     
     // Get the subset of events for the current year
-    let subset = dictionary.at(key) 
+    let subset = what.at(key) 
 
     // Iterate over each event in the subset
     for event in subset.keys() {
       let subset2 = subset.at(event)
 
       // Extract the name and action of the event
-      if type(subset2.name) == "dictionary" {
+      if type(subset2.name) == dictionary {
          for language in multilingual.lang.keys() {
             if lang == language {
               name = subset2.name.at(lang)
@@ -1418,7 +1409,6 @@
   let level = 0                     // Skill level.
   let level-text = ""               // Text representation of the skill level icons.
   let description = ""              // Skill description.
-  let dictionary = what   // Load skill data from the YAML file.
   let main_color = rgb(metadata.colors.main_color)
   let gray_color = rgb(metadata.colors.gray_color)
   let lightgray_color = rgb(metadata.colors.lightgray_color)
@@ -1455,24 +1445,24 @@
   }
 
   // Function to get language-specific field
-  let getLangField = (field, lang) => if type(field) == "dictionary" { field.at(lang) } else { field }
+  let getLangField = (field, lang) => if type(field) == dictionary { field.at(lang) } else { field }
 
   // Iterate over the keys of the dictionary to process skills
-  for key in dictionary.keys() {
-    let subset = dictionary.at(key) // Get the subset of skills for the current key
+  for key in what.keys() {
+    let subset = what.at(key) // Get the subset of skills for the current key
 
     for course in subset.keys() {
-      let header = dictionary.keys().at(index1) // Get the current category header
+      let header = what.keys().at(index1) // Get the current category header
       let details = subset.at(course)           // Get the details for the current skill
 
       // Get the name and description based on the language
-      if type(details.name) == "dictionary" {
+      if type(details.name) == dictionary {
         name = getLangField(details.name, lang)
       } else {
         name = details.name
       }
 
-      if type(details.description) == "dictionary" {
+      if type(details.description) == dictionary {
         description = getLangField(details.description, lang)
       } else {
         description = details.description
