@@ -8,9 +8,9 @@ This template is influenced by LaTeX's [moderncv](https://github.com/moderncv/mo
 
 ## Contributors
 
-```bash
-githubcontrib --owner phikleer --repo typst-modern-acad-cv --cols 6 | pbcopy
-```
+[@philkleer](https://github.com/philkleer)
+
+[@gramson93](https://github.com/gramson93)
 
 ## Fonts
 
