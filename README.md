@@ -6,6 +6,12 @@ This template serves these special needs in introducting automated sections base
 
 This template is influenced by LaTeX's [moderncv](https://github.com/moderncv/moderncv) and its typst translation [moderner-cv](https://github.com/DeveloperPaul123/modern-cv).
 
+## Contributors
+
+```bash
+githubcontrib --owner phikleer --repo typst-modern-acad-cv --cols 6 | pbcopy
+```
+
 ## Fonts
 
 In this template, the use of FontAwesome icons via the [fontawesome typst package](https://typst.app/universe/package/fontawesome) is possible, as well as the icons from Academicons [use-academicons typst package](https://typst.app/universe/package/use-academicons). To use these icons properly, you need to install each fonts on your system. You can download [fontawesome here](https://fontawesome.com/download) and [academicons here](https://jpswalsh.github.io/academicons/). Both typst packages will be load by the template itself.
