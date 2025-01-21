@@ -10,7 +10,7 @@ This template is influenced by LaTeX's [moderncv](https://github.com/moderncv/mo
 
 [@philkleer](https://github.com/philkleer)
 
-[@gramson93](https://github.com/gramson93)
+[@gramos93](https://github.com/gramos93)
 
 ## Fonts
 
