@@ -275,6 +275,17 @@ You have to call the function with three objects `skills`, `multilingual`, and `
 #cv-auto-skills(skills, multilingual, metadata, lang: language)
 ``` 
 
+To get the correct text for each skill you have to define them in the `i18n.yaml`: 
+```yaml
+...
+  skills-computer: Computer languages
+  skills-programs: Software
+  skills-languages: Languages
+...
+```
+
+The reference in the `i18n.yaml` refers to the first level, in the example this is `computer`, `programs`, and `languages`. For definition of the title you just add `skills-` infront and then you can write the title as value for the specific key (here `skills-computer`, `skills-programs`, `skills-languages`). For example, if you have a group with skills called `ai` in the `skill.yaml`, you can set the title in the `i18n.yaml` with `skills-ai: Artifical Intelligence`.
+
 ### Print your info without any formatting
 The function `cv-auto` is the base function for printing the provided infos in the specified `yaml` file with no further formatting. The functions `cv-auto-stc` and `cv-auto-stp` do only differ in the point that `cv-auto-stc` both give the title in bold, `cv-auto-stp` puts the subtitle in parentheses and `cv-auto-stc` puts the subtitle after a comma.
 
