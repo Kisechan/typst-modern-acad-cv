@@ -23,7 +23,7 @@ Furthermore, I included my favorite font [Fira Sans](https://fonts.google.com/sp
 The main function to load the construct of the academic CV is `modern-acad-cv()`. After importing the template, you can call it right away. If you don't have [Fira Sans](https://fonts.google.com/specimen/Fira+Sans) installed, choose a different font. Examples are given below.
 
 ```typst
-#import "@preview/modern-acad-cv:0.1.1": *
+#import "@preview/modern-acad-cv:0.1.3": *
 
 #show: modern-acad-cv.with(
   metadata,
@@ -52,7 +52,7 @@ colors:
 
 At the beginning of your document, you just set then set the metadata-object:
 ```typst
-#import "@preview/modern-acad-cv:0.1.0": *
+#import "@preview/modern-acad-cv:0.1.3": *
 
 #let metadata = yaml("metadata.yaml")
 ```
