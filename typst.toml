@@ -9,7 +9,7 @@ description = "A CV template for academics based on moderncv LaTeX package."
 keywords = ["CV", "Curriculum Vitae", "Resume", "Academics", "Professional", "Modern"]
 categories = ["cv"]
 disciplines = []
-repository = "https://github.com/bpkleer/typst-modern-acad-cv"
+repository = "https://github.com/philkleer/typst-modern-acad-cv"
 exclude = ["assets"]
 
 
