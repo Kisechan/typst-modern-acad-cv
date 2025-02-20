@@ -46,6 +46,21 @@
   )
 }
 
+// Function cv-cols-table: Putting input into the table
+// Arguments:
+// - left-side: the content to be aligned to the right (Type: Any)
+// - right-side: the content to be formatted as a paragraph with justified alignment (Type: Any)
+#let cv-cols-table(left-side, right-side) = {
+  
+  // Call the _cv-cols with aligned left-side and justified right-side parameters
+  _cv-cols(
+    // Align the left-side content to the right
+    align(right, left-side),
+    // Format the right-side content as a paragraph with justified alignment
+    align(left, right-side)
+  )
+}
+
 // Function cv-entry: a single entry in the CV
 // Arguments:
 // - date: content, 
@@ -1299,7 +1314,7 @@
   }
   
   // Create a table using the collected event details
-  cv-cols(
+  cv-cols-table(
     "",
     table(
       columns: 3,                       // Define the number of columns
