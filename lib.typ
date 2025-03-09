@@ -287,9 +287,9 @@
   if type(metadata.personal.name) == array [
     #metadata.personal.name.at(0).split(", ").at(1) #metadata.personal.name.at(0).split(", ").at(0)
   ] else if type(metadata.personal.name) == dictionary [
-      #text(metadata.personal.name.firstname) #text(metadata.personal.name.lastname)
+    #text(metadata.personal.name.firstname) #text(metadata.personal.name.lastname)
   ] else [
-    [#text(metadata.personal.name)]
+    #text(metadata.personal.name)
   ]
 
   // Insert a line break
