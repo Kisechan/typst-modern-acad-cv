@@ -739,19 +739,19 @@
     // Handle multilingual titles stored in a dict.
     if type(title) == dictionary {
       if not lang in title {
-        return [ #fields.title.main]  // Return the main title if the specified language is not available.
+        return [ #eval(title.main, mode: "markup")]  // Return the main title if the specified language is not available.
       } else {
         // If the title is available in the document's language, format it accordingly.
         for entry in fields.title.keys() {
           if lang in fields.title.keys() {
-            return [ #fields.title.main \[#fields.title.at(lang)\]]
+            return [ #eval(title.main, mode: "markup") \[#eval(title.at(lang), mode: "markup")\]]
           } else {
             return [ #emph("Missing title for document language")]
           }
         } 
       }
     } else {
-      return [ #fields.title]  // Return the title as is if it's a simple string.
+     return [ #eval(title, mode: "markup")]  // Return the title as markup formatted string.
     }
   }
 
