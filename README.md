@@ -6,12 +6,6 @@ This template serves these special needs in introducting automated sections base
 
 This template is influenced by LaTeX's [moderncv](https://github.com/moderncv/moderncv) and its typst translation [moderner-cv](https://github.com/DeveloperPaul123/modern-cv).
 
-## Contributors
-
-[@philkleer](https://github.com/philkleer)
-
-[@gramos93](https://github.com/gramos93)
-
 ## Fonts
 
 In this template, the use of FontAwesome icons via the [fontawesome typst package](https://typst.app/universe/package/fontawesome) is possible, as well as the icons from Academicons [use-academicons typst package](https://typst.app/universe/package/use-academicons). To use these icons properly, you need to install each fonts on your system. You can download [fontawesome here](https://fontawesome.com/download) and [academicons here](https://jpswalsh.github.io/academicons/). Both typst packages will be load by the template itself.
@@ -23,7 +17,7 @@ Furthermore, I included my favorite font [Fira Sans](https://fonts.google.com/sp
 The main function to load the construct of the academic CV is `modern-acad-cv()`. After importing the template, you can call it right away. If you don't have [Fira Sans](https://fonts.google.com/specimen/Fira+Sans) installed, choose a different font. Examples are given below.
 
 ```typst
-#import "@preview/modern-acad-cv:0.1.3": *
+#import "@preview/modern-acad-cv:0.1.4": *
 
 #show: modern-acad-cv.with(
   metadata,
@@ -52,7 +46,7 @@ colors:
 
 At the beginning of your document, you just set then set the metadata-object:
 ```typst
-#import "@preview/modern-acad-cv:0.1.3": *
+#import "@preview/modern-acad-cv:0.1.4": *
 
 #let metadata = yaml("metadata.yaml")
 ```
@@ -164,7 +158,7 @@ For example, to get work entries, you choose `work`, which you defined beforehan
 ```
 
 ### Sorting publications and referencing your own name or correpsonding
-Since `typst` so far does not support multiple bibliographies or subsetting these, this function let you choose specific entries via the `entries` argument or group of entries by the `tag` argument. Furthermore, you can indicate a string in `me` that can be highlighted in every output entry (i.e., your formatted name). So far, this function leads to another function that create APA-style format, if you want to use any other citation style, you need to download the template on [github](https://github.com/bpkleer/modern-acad-cv), introduce your own styling and then add it in the `cv-refs()` function. 
+Since `typst` so far does not support multiple bibliographies or subsetting these, this function let you choose specific entries via the `entries` argument or group of entries by the `tag` argument. Furthermore, you can indicate a content in `me` that can be highlighted in every output entry (i.e., your formatted name). If you have different publication names, you can also provide an array of content for `me`, i.e. `([Mustermensch, M.], [Person, M.])`. So far, this function leads to another function that create APA-style format, if you want to use any other citation style, you need to download the template on [github](https://github.com/bpkleer/modern-acad-cv), introduce your own styling and then add it in the `cv-refs()` function. 
 
 ```typst
 #let multilingual = yaml("dbs/multilingual.yaml")
@@ -172,49 +166,54 @@ Since `typst` so far does not support multiple bibliographies or subsetting thes
 
 // function call of group of peer-reviewed with tag `peer`
 #cv-refs(refs, multilingual, tag: "peer", me: [Mustermensch, M.], lang: language)
+
+// function call of group of peer-reviewed with tag `peer` and with array of contents for different publication names
+#cv-refs(refs, multilingual, tag: "peer", me: ([Mustermensch, M.], [Person, M.]), lang: language)
 ```
 
 You see in the example pictures that I used this function to built five different subheaders, i.e. for peer reviewed articles (`tag: "peer"`) and chapters in edited books (`tag: "edited"`). You can define the tags how you want, however, they need to put them into `tag: <str>`. 
 
 Sometimes, it is not only necessary to highlight your own name, you might also want to indicate yourself as corresponding author. This can be done through the `refs.yaml` which adhere to [Hayagriva](https://github.com/typst/hayagriva). By adding an argument `corresponding` in the yaml and setting the value to `true`, a small `C` will appear next to your name. 
 
+Furthermore, you can use typst specific text formatting in the title. For example, if you have a species name that usually should be in italics, you can write `_Panthera leo_` in the title. 
+
 ```yaml
 Mustermensch2023:
   type: "article"
   date: 2023
-  page-range: 55-78
-  title: "Populism and Social Media: A Comparative Study of Political Mobilization"
+  page-range: 123-130
+  title: 
+    main: "Thermal Tolerance and Habitat Use in _Panthera leo_: Implications for Conservation Under Climate Change"
   tags: "peer"
   author: [ "Mustermensch, Momo", "Rivera, Casey" ]
   corresponding: true
   parent:
-    title: "Journal of Political Communication"
-    volume: 41
-    issue: 3
+    title: "Journal of Theoretical Ecology and Climate Dynamics"
+    volume: 15
+    issue: 2
   serial-number:
-    doi: "10.1016/j.jpolcom.2023.102865"
+    doi: "10.1016/j.jtheorecoclidy.2023.102865"
 ```
 
 For applications abroad, it might be worth to translate at least title of the publications so that other persons easily can see what the paper is about. In every `title` argument, you can therefore provide a dictionary with the language codes and the titles. Keep the original title in `main` and the translations with the corresponding language shortcut (i.e., `"en"` or `"pt"`). The function prints the main and translated title, depending on the provided translation in the `refs.yaml`. Be aware, here you find not `de` in the dictionary, instead you find `main`. The original title needs to be wrapped in `main`. 
 
 ```yaml
-Mustermensch2023:
+Mustermensch2022:
   type: "article"
-  date: 2023
-  page-range: 55-78
+  date: 2022
+  page-range: 201-220
   title: 
-    main: "Populismus und soziale Medien: Eine vergleichende Studie zur politischen Mobilisierung"
-    en: "Populism and Social Media: A Comparative Study of Political Mobilization"
-    pt: "Populismo e redes sociais: Um Estudo Comparativo de Mobilização Política"
+    main: "Der Niedergang der traditionellen Medien bei Wahlen: Evidenz aus europäischen Demokratien"
+    en: "The Decline of Traditional Media in Electoral Politics: Evidence from European Democracies"
+    pt: "O declínio da mídia tradicional na política eleitoral: Evidências das democracias européias"
   tags: "peer"
-  author: [ "Mustermensch, Momo", "Rivera, Casey" ]
-  corresponding: true
+  author: [ "Mustermensch, Momo" ]
   parent:
-    title: "Journal of Political Communication"
-    volume: 41
-    issue: 3
+    title: "European Journal of Political Science"
+    volume: 50
+    issue: 2
   serial-number:
-    doi: "10.1016/j.jpolcom.2023.102865"
+    doi: "10.1080/ejps.2022.123456"
 ```
 
 ### cv-auto-skills()
@@ -274,17 +273,6 @@ You have to call the function with three objects `skills`, `multilingual`, and `
 
 #cv-auto-skills(skills, multilingual, metadata, lang: language)
 ``` 
-
-To get the correct text for each skill you have to define them in the `i18n.yaml`: 
-```yaml
-...
-  skills-computer: Computer languages
-  skills-programs: Software
-  skills-languages: Languages
-...
-```
-
-The reference in the `i18n.yaml` refers to the first level, in the example this is `computer`, `programs`, and `languages`. For definition of the title you just add `skills-` infront and then you can write the title as value for the specific key (here `skills-computer`, `skills-programs`, `skills-languages`). For example, if you have a group with skills called `ai` in the `skill.yaml`, you can set the title in the `i18n.yaml` with `skills-ai: Artifical Intelligence`.
 
 ### Print your info without any formatting
 The function `cv-auto` is the base function for printing the provided infos in the specified `yaml` file with no further formatting. The functions `cv-auto-stc` and `cv-auto-stp` do only differ in the point that `cv-auto-stc` both give the title in bold, `cv-auto-stp` puts the subtitle in parentheses and `cv-auto-stc` puts the subtitle after a comma.

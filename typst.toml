@@ -1,9 +1,9 @@
 [package]
 name = "modern-acad-cv"
-version = "0.1.3"
+version = "0.1.4"
 compiler = "0.13.0"
 entrypoint = "lib.typ"
-authors = ["philkleer (Philipp Kleer) <philipp.kleer@posteo.com>", "gramos93 (Gabriel Ramos) <piscina.ramos@gmail.com>"]
+authors = ["philkleer (Philipp Kleer) <philipp.kleer@posteo.com>", "gramos93 (Gabriel Ramos) <piscina.ramos@gmail.com>", "andieich (Andreas Eich)", "kollienne (Kieran Collienne)"]
 license = "MIT"
 description = "A CV template for academics based on moderncv LaTeX package."
 keywords = ["CV", "Curriculum Vitae", "Resume", "Academics", "Professional", "Modern"]
@@ -15,5 +15,5 @@ exclude = ["assets"]
 
 [template]
 path = "template"
-entrypoint = "main.typ"
+entrypoint = "example.typ"
 thumbnail = "assets/example1.png"
