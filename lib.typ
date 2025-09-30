@@ -633,7 +633,7 @@
       let parts = auths.at(index).split(", ")
       let author = text(parts.at(0) + ", " + parts.at(1).first() + ".")
 
-      // Highlight the author's name if it matches `me`.
+      // Highlight the author's name if it matches `me` or one of the names in the array `me`
       if not me == none {
         if author == me or type(me) == array and author in me {
           if "corresponding" in fields and fields.corresponding == true {
@@ -1131,11 +1131,11 @@
     }
 
     if "location" in subset.keys() {
-      entry += [, #location]
+      entry += [ #location]
     }
 
     if "description" in subset.keys() {
-      entry += [, #description]
+      entry += [\ #description]
     }
     
     // If no subtitle is available, create a column with just the title
@@ -1186,17 +1186,21 @@
           }
 
           // Handle the 'subtitle' field
-          if type(subset.at("subtitle")) == dictionary {
+          if "description" in subset.keys() {
+            if type(subset.at("subtitle")) == dictionary {
             subtitle = subset.subtitle.at(lang)
-          } else {
-            subtitle = subset.subtitle
+            } else {
+              subtitle = subset.subtitle
+            }
           }
 
           // Handle the 'location' field
-          if type(subset.at("location")) == dictionary {
+          if "location" in subset.keys() {
+            if type(subset.at("location")) == dictionary {
             location = subset.location.at(lang)
-          } else {
-            location = subset.location
+            } else {
+              location = subset.location
+            }
           }
 
           // Handle the 'description' field, if it exists
@@ -1223,7 +1227,7 @@
       }
 
       if "description" in subset.keys() {
-        entry += [, #emph(description)]
+        entry += [\ #emph(description)]
       }
     
       // Generate a column with the event date and elements without description
